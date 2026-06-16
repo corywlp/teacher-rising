@@ -46,6 +46,8 @@
       width: 0%;
       background: #C9622F;
       border-radius: 99px;
+      position: relative;
+      overflow: hidden;
       animation: load 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
     @keyframes load {
@@ -53,6 +55,29 @@
       60%  { width: 75%; }
       85%  { width: 88%; }
       100% { width: 92%; }
+    }
+    .bar-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+      animation: shimmer 2.2s ease-in-out 3.6s infinite;
+    }
+    @keyframes shimmer {
+      0%   { left: -60%; }
+      100% { left: 160%; }
+    }
+    .pct {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: #C9622F;
+      text-align: center;
+      margin-top: -10px;
     }
     .bar-caption {
       font-size: 0.75rem;
@@ -88,7 +113,20 @@
   <div class="bar-wrap">
     <div class="bar-fill"></div>
   </div>
+  <div class="pct" id="pct">0%</div>
   <div class="bar-caption">Loading Almost Complete. Full Website Coming Soon.</div>
   <a class="one-pager-link" href="one-pager.html">View Our One Pager</a>
+
+  <script>
+    var count = 0;
+    var target = 92;
+    var el = document.getElementById('pct');
+    var step = 3200 / target;
+    var timer = setInterval(function() {
+      count++;
+      el.textContent = count + '%';
+      if (count >= target) clearInterval(timer);
+    }, step);
+  </script>
 </body>
 </html>
