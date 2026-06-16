@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teacher Rising</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== PALETTE =====
+       Charcoal:   #1E1E1E  — background, depth
+       Cream:      #F2EDE4  — primary text, light elements
+       Terracotta: #C9622F  — accent, energy
+       Warm Tan:   #A89070  — secondary text, subtle warmth
+       Deep Rust:  #7A3318  — depth accent
+    ==================== */
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #1E1E1E;
+      color: #F2EDE4;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
+
+    /* ===== EDIT BAR ===== */
+    #edit-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #111;
+      color: #F2EDE4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 10px 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      border-bottom: 1px solid #333;
+    }
+
+    #edit-bar .edit-status { color: #C9622F; font-weight: 600; }
+
+    #edit-toggle-btn {
+      background: #C9622F;
+      color: #F2EDE4;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      transition: background 0.2s;
+    }
+
+    #edit-toggle-btn:hover { background: #a84e23; }
+
+    #print-btn {
+      background: transparent;
+      color: #A89070;
+      border: 1px solid #A89070;
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    #print-btn:hover { background: #A89070; color: #1E1E1E; }
+
+    body.has-edit-bar { padding-top: 92px; }
+
+    body.edit-mode [contenteditable="true"] {
+      outline: 1px dashed #C9622F;
+      outline-offset: 3px;
+      border-radius: 2px;
+      cursor: text;
+    }
+
+    body.edit-mode [contenteditable="true"]:focus {
+      outline: 1px solid #C9622F;
+      background: rgba(201, 98, 47, 0.08);
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding-bottom: 36px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid #333;
+    }
+
+    .logo { flex-shrink: 0; }
+
+    .header-text { flex: 1; }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #F2EDE4;
+      line-height: 1;
+      letter-spacing: -0.5px;
+    }
+
+    .brand span { color: #C9622F; }
+
+    .tagline {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: #A89070;
+      margin-top: 10px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ===== INTRO ===== */
+    .intro {
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: #D9D3C8;
+      margin-bottom: 44px;
+      max-width: 780px;
+      font-weight: 300;
+    }
+
+    /* ===== BELIEFS ===== */
+    .beliefs {
+      border-left: 3px solid #C9622F;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+      background: rgba(201, 98, 47, 0.06);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .beliefs h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #C9622F;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .beliefs ul { list-style: none; padding: 0; }
+
+    .beliefs ul li {
+      padding: 7px 0;
+      font-size: 0.97rem;
+      line-height: 1.7;
+      color: #D9D3C8;
+      font-weight: 300;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .beliefs ul li:last-child { border-bottom: none; }
+
+    .beliefs ul li::before {
+      content: "/ ";
+      color: #C9622F;
+      font-weight: 700;
+    }
+
+    /* ===== SECTION TITLE ===== */
+    h2.section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #F2EDE4;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    h2.section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #333;
+    }
+
+    /* ===== PD GRID ===== */
+    .pd-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .pd-card {
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      background: #252525;
+      transition: border-color 0.2s;
+    }
+
+    .pd-card:hover { border-color: #C9622F; }
+
+    .pd-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: #F2EDE4;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .pd-card p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: #A89070;
+      font-weight: 300;
+    }
+
+    /* ===== MENTORING ===== */
+    .mentoring {
+      border-left: 3px solid #A89070;
+      padding: 24px 28px;
+      margin-bottom: 48px;
+      background: #252525;
+      border-radius: 0 6px 6px 0;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: #D9D3C8;
+      font-weight: 300;
+    }
+
+    /* ===== CREDS ===== */
+    .creds {
+      background: #C9622F;
+      color: #F2EDE4;
+      padding: 24px 28px;
+      border-radius: 8px;
+      margin-bottom: 48px;
+    }
+
+    .creds h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: rgba(242, 237, 228, 0.7);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .creds ul { list-style: none; padding: 0; }
+
+    .creds ul li {
+      font-size: 0.95rem;
+      padding: 5px 0;
+      line-height: 1.6;
+      font-weight: 300;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .creds ul li:last-child { border-bottom: none; }
+
+    .creds ul li::before {
+      content: "— ";
+      font-weight: 700;
+      color: rgba(242, 237, 228, 0.5);
+    }
+
+    /* ===== CONTACT ===== */
+    .contact {
+      border-top: 1px solid #333;
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .contact-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #A89070;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .contact-info {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: #D9D3C8;
+      font-weight: 300;
+    }
+
+    .contact-info a {
+      color: #C9622F;
+      text-decoration: none;
+    }
+
+    .contact-info a:hover { text-decoration: underline; }
+
+    .cta {
+      background: transparent;
+      color: #F2EDE4;
+      border: 1px solid #C9622F;
+      padding: 14px 32px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-family: 'Inter', sans-serif;
+    }
+
+    @media print {
+      #edit-bar { display: none !important; }
+      body { background: #fff; color: #1E1E1E; padding: 16px !important; }
+      .pd-card { background: #f9f9f9; border-color: #ddd; }
+      .cta { border-color: #C9622F; color: #C9622F; }
+      [contenteditable] { outline: none !important; background: transparent !important; }
+    }
+  </style>
+</head>
+<body class="has-edit-bar">
+
+  <!-- EDIT BAR -->
+  <div id="edit-bar">
+    <span>Teacher Rising — One Pager</span>
+    <span class="edit-status" id="edit-status">View Mode</span>
+    <button id="edit-toggle-btn" onclick="toggleEdit()">Enable Editing</button>
+    <button id="print-btn" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <header>
+    <!-- LOGO: Abstract sunrise with rising figure -->
+    <div class="logo">
+      <img src="logo.png" alt="Teacher Rising logo" style="width: 90px; height: 90px; object-fit: contain; border-radius: 8px;"/>
+    </div>
+
+    <div class="header-text">
+      <div class="brand">Teacher <span>Rising</span></div>
+      <div class="tagline">Practitioner-led. Classroom-proven.</div>
+    </div>
+  </header>
+
+  <p class="intro">
+    Teacher Rising brings professional development built from the inside out — not from a textbook down. Every workshop, every session, every conversation is grounded in a decade of real classroom experience and the belief that when teachers grow, students flourish.
+  </p>
+
+  <div class="beliefs">
+    <h2>What We Believe</h2>
+    <ul>
+      <li>Young people are generally curious and want to learn. If put in the right situation, learning will occur.</li>
+      <li>Teaching is about building relationships, and leveraging them to get students to take academic risks and to respect the classroom's goals and expectations.</li>
+      <li>Our education system was built for a world that no longer exists. Working within it and innovating within it are not opposites — both are required.</li>
+      <li>Teaching is a craft. It needs to be sharpened and re-sharpened. Quality instruction raises output and results.</li>
+    </ul>
+  </div>
+
+  <h2 class="section-title">Professional Development</h2>
+
+  <div class="pd-grid">
+    <div class="pd-card">
+      <h3>Teach to Every Mind</h3>
+      <p style="color:#C9622F; font-size:0.78rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; font-weight:600;">4.5 Act 48 Hours</p>
+      <p>Three strategies for reaching every learner: "Inverted Media" hooks that activate prior knowledge before a text, metacognitive think-aloud modeling that makes the reading process visible, and multi-modal text sets with non-worksheet assessments. Participants leave with a complete, classroom-ready lesson using all three.</p>
+    </div>
+    <div class="pd-card">
+      <h3>Understanding AI &amp; Practical Tools for Teachers</h3>
+      <p style="color:#C9622F; font-size:0.78rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; font-weight:600;">5 Act 48 Hours</p>
+      <p>A hands-on workshop covering how LLMs actually work, live practice with Brisk Teaching (text leveling, differentiated assessments) and Curipod (interactive lesson builder), and guided setup of Claude Code for creating custom classroom tools, review chatbots, and administrative tasks. Every participant leaves with a real, finished deliverable.</p>
+    </div>
+    <div class="pd-card">
+      <h3>Cybersecurity for the School &amp; Classroom</h3>
+      <p style="color:#C9622F; font-size:0.78rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; font-weight:600;">4.5 Act 48 Hours</p>
+      <p>Built for teachers and staff — not IT departments. Participants work through the Google Phishing Quiz, learn FERPA basics and student data obligations, set up MFA on school accounts, and complete a simulated ransomware breach exercise that puts response protocols into practice in real time.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">1-on-1 Mentoring</h2>
+
+  <div class="mentoring">
+    New teachers don't just need PD — they need a guide. Teacher Rising offers personalized 1-on-1 mentoring for first-year teachers, providing ongoing support through the real challenges of the classroom: building culture from day one, navigating difficult relationships, maintaining high expectations, and developing the confidence to see it through. This isn't coaching from a manual — it's mentorship from someone who's been in those rooms.
+  </div>
+
+  <div class="creds">
+    <h2>Why Teacher Rising</h2>
+    <ul>
+      <li>10 years teaching at a Philadelphia alternative high school</li>
+      <li>Co-founder of a workforce development nonprofit — still growing</li>
+      <li>2025 Penn GSE / University of Pennsylvania Educator of the Year</li>
+      <li>PD built from the classroom up — not from a textbook down</li>
+    </ul>
+  </div>
+
+  <div class="contact">
+    <div>
+      <div class="contact-label">Get in Touch</div>
+      <div class="contact-info">
+        czoblin@gmail.com<br/>
+        (609) 335-3307<br/>
+        <a href="https://www.linkedin.com/in/cory-zoblin-20347632/" target="_blank">linkedin.com/in/cory-zoblin-20347632</a>
+      </div>
+    </div>
+    <div class="cta">Book a Session</div>
+  </div>
+
+  <script>
+    var editMode = false;
+    var editableSelectors = [
+      '.tagline', '.intro', '.beliefs h2', '.beliefs ul li',
+      'h2.section-title', '.pd-card h3', '.pd-card p',
+      '.mentoring', '.creds h2', '.creds ul li',
+      '.contact-label', '.contact-info', '.cta', '.brand'
+    ];
+
+    function toggleEdit() {
+      editMode = !editMode;
+      var btn = document.getElementById('edit-toggle-btn');
+      var status = document.getElementById('edit-status');
+
+      if (editMode) {
+        editableSelectors.forEach(function(sel) {
+          document.querySelectorAll(sel).forEach(function(el) {
+            el.setAttribute('contenteditable', 'true');
+          });
+        });
+        document.body.classList.add('edit-mode');
+        btn.textContent = 'Done Editing';
+        btn.style.background = '#A89070';
+        btn.style.color = '#1E1E1E';
+        status.textContent = 'Edit Mode ON — click any text to edit';
+      } else {
+        document.querySelectorAll('[contenteditable]').forEach(function(el) {
+          el.removeAttribute('contenteditable');
+        });
+        document.body.classList.remove('edit-mode');
+        btn.textContent = 'Enable Editing';
+        btn.style.background = '#C9622F';
+        btn.style.color = '#F2EDE4';
+        status.textContent = 'View Mode';
+      }
+    }
+  </script>
+
+</body>
+</html>
