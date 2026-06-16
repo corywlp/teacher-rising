@@ -70,22 +70,20 @@
       0%   { left: -60%; }
       100% { left: 160%; }
     }
-    .pct {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-      color: #C9622F;
-      text-align: center;
-      margin-top: -10px;
-    }
     .bar-caption {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       font-weight: 400;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: #A89070;
       text-align: center;
+      opacity: 0;
+      animation: fadein 0.9s ease forwards 3.4s;
+    }
+    .bar-caption em { color: #C9622F; font-style: normal; font-weight: 600; }
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(5px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .one-pager-link {
       font-family: 'Inter', sans-serif;
@@ -113,20 +111,7 @@
   <div class="bar-wrap">
     <div class="bar-fill"></div>
   </div>
-  <div class="pct" id="pct">0%</div>
-  <div class="bar-caption">Loading Almost Complete. Full Website Coming Soon.</div>
+  <div class="bar-caption"><em>92% there</em> — Full Site Coming Soon.</div>
   <a class="one-pager-link" href="one-pager.html">View Our One Pager</a>
-
-  <script>
-    var count = 0;
-    var target = 92;
-    var el = document.getElementById('pct');
-    var step = 3200 / target;
-    var timer = setInterval(function() {
-      count++;
-      el.textContent = count + '%';
-      if (count >= target) clearInterval(timer);
-    }, step);
-  </script>
 </body>
 </html>
