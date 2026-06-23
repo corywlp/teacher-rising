@@ -271,6 +271,14 @@
       font-family: 'Inter', sans-serif;
     }
 
+    @media (max-width: 600px) {
+      body { padding: 20px 16px; }
+      header { flex-direction: column; align-items: flex-start; gap: 16px; padding-bottom: 24px; margin-bottom: 28px; }
+      .brand { font-size: 2.2rem; }
+      .pd-grid { grid-template-columns: 1fr; }
+      .contact { flex-direction: column; align-items: flex-start; }
+    }
+
     @media print {
       #edit-bar { display: none !important; }
       body { background: #fff; color: #1E1E1E; padding: 16px !important; }
