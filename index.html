@@ -34,66 +34,24 @@
       text-align: center;
     }
     .coming-soon span { color: #C9622F; }
-    .bar-wrap {
-      width: 440px;
-      height: 8px;
-      background: #333;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .bar-fill {
-      height: 100%;
-      width: 0%;
-      background: #C9622F;
-      border-radius: 99px;
-      position: relative;
-      overflow: hidden;
-      animation: load 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
-    @keyframes load {
-      0%   { width: 0%; }
-      60%  { width: 75%; }
-      85%  { width: 88%; }
-      100% { width: 92%; }
-    }
-    .bar-fill::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -60%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
-      animation: shimmer 2.2s ease-in-out 3.6s infinite;
-    }
-    @keyframes shimmer {
-      0%   { left: -60%; }
-      100% { left: 160%; }
-    }
-    .bar-caption {
-      font-size: 0.85rem;
+    .coming-soon-sub {
+      font-size: 1.2rem;
       font-weight: 400;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       color: #A89070;
       text-align: center;
-      opacity: 0;
-      animation: fadein 0.9s ease forwards 3.4s;
-    }
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(5px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
     .one-pager-link {
       font-family: 'Inter', sans-serif;
-      font-size: 0.85rem;
+      font-size: 1rem;
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #F2EDE4;
       background: #C9622F;
       text-decoration: none;
-      padding: 14px 36px;
+      padding: 16px 44px;
       border-radius: 4px;
       transition: background 0.2s, transform 0.15s;
     }
@@ -105,9 +63,8 @@
       body { gap: 18px; padding: 32px 20px 80px; }
       .logo img { width: 90px; height: 90px; }
       .coming-soon { font-size: 2.6rem; }
-      .bar-wrap { width: 90%; }
-      .bar-caption { font-size: 0.75rem; letter-spacing: 1px; }
-      .one-pager-link { padding: 12px 28px; font-size: 0.8rem; }
+      .coming-soon-sub { font-size: 1rem; letter-spacing: 1px; }
+      .one-pager-link { padding: 14px 32px; font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -116,10 +73,7 @@
     <img src="logo.jpg" alt="Teacher Rising" />
   </div>
   <div class="coming-soon">Teacher <span>Rising</span></div>
-  <div class="bar-wrap">
-    <div class="bar-fill"></div>
-  </div>
-  <div class="bar-caption">Loading Almost Complete. Full Site Coming Soon.</div>
+  <div class="coming-soon-sub">Full Site Coming Soon</div>
   <a class="one-pager-link" href="one-pager.html">View Our One Pager</a>
 </body>
 </html>
